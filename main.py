@@ -51,6 +51,8 @@ pos_personagem_y = 400
 pos_x = 50
 pos_y = 50
 
+#Velocidade do personagem
+velocidade_pers = 0.1
 
 #Criando loop de gameplay
 rodando = True
@@ -63,6 +65,23 @@ while rodando:
             rodando = False #Mudando o valor da variável de controle para acabar com o loop
             
     # 2. Atualização do jogo (sem nada por enquanto) e Desenhar na tela
+
+    #Detecção de input (pressionado)
+    key = pg.key.get_pressed()
+
+    #Movimentação do personagem
+    if key[pg.K_a]:
+        pos_personagem_x -= velocidade_pers
+
+    if key[pg.K_d]:
+        pos_personagem_x += velocidade_pers
+
+    if key[pg.K_w]:
+        pos_personagem_y -= velocidade_pers 
+
+    if key[pg.K_s]:
+        pos_personagem_y += velocidade_pers
+
 
     tela.fill((255, 255, 255)) #preenchendo tela com a cor branca
 
