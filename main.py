@@ -41,6 +41,8 @@ largura_personagem = 80
 #Redimensionando personagem
 personagem_img_redimensionado = pg.transform.scale(personagem_img, (largura_personagem, altura_personagem))
 
+personagem_img = personagem_img_redimensionado
+
 #Posição do personagem
 pos_personagem_x = 300
 pos_personagem_y = 400
