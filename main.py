@@ -36,8 +36,8 @@ except pg.error:
 
 
 #Tamanho do personagem
-altura_personagem = 300
-largura_personagem = 300
+altura_personagem = 80
+largura_personagem = 80
 
 #Redimensionando personagem
 personagem_img_redimensionado = pg.transform.scale(personagem_img, (largura_personagem, altura_personagem))
@@ -53,7 +53,7 @@ pos_x = 50
 pos_y = 50
 
 #Velocidade do personagem
-velocidade_pers = 0.1
+velocidade_pers = 0.5
 
 #Criando loop de gameplay
 rodando = True
@@ -102,8 +102,8 @@ while rodando:
     mouse_x, mouse_y = pg.mouse.get_pos()
 
     #Pegar centro do personagem
-    centro_personagem_x = largura_J / 2 - largura_personagem / 2
-    centro_personagem_y = altura_J / 2 - altura_personagem / 2
+    centro_personagem_x = pos_personagem_x - largura_personagem / 2
+    centro_personagem_y = pos_personagem_y - altura_personagem / 2
 
     diferença_x = mouse_x - centro_personagem_x
     diferença_y = mouse_y - centro_personagem_y
