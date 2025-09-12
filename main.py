@@ -1,5 +1,6 @@
 import pygame as pg #Importei e criei um apelido para a biblioteca base do nosso jogo (pg)
 import os
+import math
 
 os.system("cls")
 
@@ -66,22 +67,35 @@ while rodando:
             
     # 2. Atualização do jogo (sem nada por enquanto) e Desenhar na tela
 
-    #Detecção de input (pressionado)
+    #Detecção de input (pressionado) :P 
     key = pg.key.get_pressed()
+
+    #Controle de velocidade
+    deslocamento_x = 0
+    deslocamento_y = 0
 
     #Movimentação do personagem
     if key[pg.K_a]:
-        pos_personagem_x -= velocidade_pers
+        deslocamento_x -= 1
 
     if key[pg.K_d]:
-        pos_personagem_x += velocidade_pers
+        deslocamento_x += 1
 
     if key[pg.K_w]:
-        pos_personagem_y -= velocidade_pers 
+        deslocamento_y -= 1 
 
     if key[pg.K_s]:
-        pos_personagem_y += velocidade_pers
+        deslocamento_y += 1
 
+    #Normalizando a velocidade
+    if deslocamento_x != 0 and deslocamento_y != 0:
+        normalizador = math.sqrt(2) #Porque ele soma as velocidades (1² + 1² = 2), então queremos fazer ela ser igual a velocidade normal
+        deslocamento_x /= normalizador
+        deslocamento_y /= normalizador
+
+    #Atualização da localização
+    pos_personagem_x += deslocamento_x * velocidade_pers
+    pos_personagem_y += deslocamento_y * velocidade_pers
 
     tela.fill((255, 255, 255)) #preenchendo tela com a cor branca
 
