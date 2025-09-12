@@ -24,7 +24,7 @@ pg.display.set_caption("Joguin dos maia papai rs")
 
 #Carregando o nosso png de personagem
 try:
-    personagem_img = pg.image.load('bolso.png')
+    personagem_img = pg.image.load('bolso.png').convert_alpha()
 #tratamento de erros
 except pg.error:
     print(f"Não foi possível carregar imagem 'bolso.png' ")
@@ -36,8 +36,8 @@ except pg.error:
 
 
 #Tamanho do personagem
-altura_personagem = 80
-largura_personagem = 80
+altura_personagem = 300
+largura_personagem = 300
 
 #Redimensionando personagem
 personagem_img_redimensionado = pg.transform.scale(personagem_img, (largura_personagem, altura_personagem))
@@ -97,6 +97,26 @@ while rodando:
     pos_personagem_x += deslocamento_x * velocidade_pers
     pos_personagem_y += deslocamento_y * velocidade_pers
 
+    #Virar para mira de mouse
+    #Pegar posição do mouse
+    mouse_x, mouse_y = pg.mouse.get_pos()
+
+    #Pegar centro do personagem
+    centro_personagem_x = largura_J / 2 - largura_personagem / 2
+    centro_personagem_y = altura_J / 2 - altura_personagem / 2
+
+    diferença_x = mouse_x - centro_personagem_x
+    diferença_y = mouse_y - centro_personagem_y
+
+    #Calcula o ângulo em radianos e converte para graus
+    angulo = -math.degrees(math.atan2(diferença_y, diferença_x))
+
+    #Rotaciona a imagem 
+    imagem_rotacionada = pg.transform.rotate(personagem_img, angulo)
+
+    #Obtem um novo retângulo e obtem o cento dele
+    rect_rotacionado = imagem_rotacionada.get_rect(center=(centro_personagem_x, centro_personagem_y))
+
     tela.fill((255, 255, 255)) #preenchendo tela com a cor branca
 
     #Desenhando um quadrado
@@ -104,7 +124,8 @@ while rodando:
     pg.draw.circle(tela, AZUL, (200, 200), 40)
 
     #Desenhando a imagem
-    tela.blit(personagem_img, (pos_personagem_x, pos_personagem_y))
+    # tela.blit(personagem_img, (pos_personagem_x, pos_personagem_y))
+    tela.blit(imagem_rotacionada, rect_rotacionado)
     
     # Atualização da tela para exibir possíveis mudanças
     pg.display.flip()
