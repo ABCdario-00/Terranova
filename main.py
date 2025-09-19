@@ -59,8 +59,8 @@ velocidade_pers = 50
 is_fullscreen = False
 
 #posição da camera
-camera_y = pos_personagem_x - largura_J / 2
-camera_x = pos_personagem_y - altura_J / 2
+camera_y = 0
+camera_x = 0
 
 #inicialização do clock
 clock = pg.time.Clock()
@@ -132,8 +132,10 @@ while rodando:
     mouse_x, mouse_y = pg.mouse.get_pos()
 
     #Pegar centro do personagem
-    centro_personagem_x = pos_personagem_x - largura_personagem / 2
-    centro_personagem_y = pos_personagem_y - altura_personagem / 2
+    # centro_personagem_x = pos_personagem_x - largura_personagem / 2
+    # centro_personagem_y = pos_personagem_y - altura_personagem / 2
+    centro_personagem_x = largura_J / 2
+    centro_personagem_y = altura_J / 2
 
     diferença_x = mouse_x - centro_personagem_x
     diferença_y = mouse_y - centro_personagem_y
@@ -146,7 +148,7 @@ while rodando:
 
     #Obtem um novo retângulo e obtem o cento dele
     # rect_rotacionado = imagem_rotacionada.get_rect(center=(centro_personagem_x, centro_personagem_y))
-    rect_rotacionado = imagem_rotacionada.get_rect(center=(largura_J / 2, altura_J / 2))
+    rect_rotacionado = imagem_rotacionada.get_rect(center=(centro_personagem_x, centro_personagem_y))
 
     tela.fill((255, 255, 255)) #preenchendo tela com a cor branca
 
