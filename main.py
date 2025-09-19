@@ -8,16 +8,19 @@ os.system("cls")
 pg.init()
 
 #Criando variaveis que armazenam o tamanho da nossa janela
-largura_J = 800
-altura_J = 600
+largura_J = 1280
+altura_J = 720
 
 #Cores
 BRANCO = (255, 255, 255)
 VERMELHO = (255, 0, 0)
 AZUL = (0, 0, 255)
+AMARELO = (255, 255, 0)
 
 #Cria a janela e armazena em uma variável
-tela = pg.display.set_mode((largura_J, altura_J))
+tela_principal = pg.display.set_mode((largura_J, altura_J), pg.RESIZABLE)
+
+tela_do_jogo = pg.display.set_mode((largura_J, altura_J))
 
 #Definindo o nome da janela
 pg.display.set_caption("Joguin dos maia papai rs")
@@ -49,8 +52,10 @@ pos_personagem_x = 300
 pos_personagem_y = 400
 
 #Localização inicial
-pos_x = 50
-pos_y = 50
+pos_rect_x = 50
+pos_rect_y = 50
+pos_circle_x = 200
+pos_circle_y = 200
 
 #Velocidade do personagem
 velocidade_pers = 50
@@ -61,6 +66,8 @@ is_fullscreen = False
 #posição da camera
 camera_y = 0
 camera_x = 0
+
+tamanho_malha = 50
 
 #inicialização do clock
 clock = pg.time.Clock()
@@ -80,15 +87,12 @@ while rodando:
             if evento.key == pg.K_F11:
                 is_fullscreen = not is_fullscreen
                 if is_fullscreen:
-                    tela = pg.display.set_mode((0,0), pg.FULLSCREEN)
+                    tela_principal = pg.display.set_mode((largura_J, altura_J), pg.FULLSCREEN)
                 else:
-                    tela = pg.display.set_mode((largura_J, altura_J))
+                    tela_principal = pg.display.set_mode((largura_J, altura_J))
 
         if evento.type == pg.VIDEORESIZE:
-            largura_J = evento.w
-            altura_J = evento.h
-
-            tela = pg.display.set_mode((largura_J, altura_J))
+            tela_principal = pg.display.set_mode((evento.w, evento.h), pg.RESIZABLE)
             
     # 2. Atualização do jogo (sem nada por enquanto) e Desenhar na tela
 
@@ -150,15 +154,30 @@ while rodando:
     # rect_rotacionado = imagem_rotacionada.get_rect(center=(centro_personagem_x, centro_personagem_y))
     rect_rotacionado = imagem_rotacionada.get_rect(center=(centro_personagem_x, centro_personagem_y))
 
-    tela.fill((255, 255, 255)) #preenchendo tela com a cor branca
+    tela_do_jogo.fill((255, 255, 255)) #preenchendo tela com a cor branca
+
+    # desenhando malha em amarelo
+    for x in range(int(largura_J / tamanho_malha) + 2):
+        x_pos = x * tamanho_malha - (camera_y % tamanho_malha)
+        pg.draw.line(tela_do_jogo, AMARELO, (x_pos, 0), (x_pos, altura_J))
+
+    for y in range(int(altura_J / tamanho_malha) + 2):
+        y_pos = y * tamanho_malha - (camera_x % tamanho_malha)
+        pg.draw.line(tela_do_jogo, AMARELO, (0, y_pos), (largura_J, y_pos))
 
     #Desenhando um quadrado
-    pg.draw.rect(tela, VERMELHO, (pos_x, pos_y, 100, 100))
-    pg.draw.circle(tela, AZUL, (200, 200), 40)
+    pg.draw.rect(tela_do_jogo, VERMELHO, (pos_rect_y - camera_y, pos_rect_x - camera_x, 100, 100))
+    pg.draw.circle(tela_do_jogo, AZUL, (int(pos_circle_y - camera_y), int(pos_circle_x - camera_x)), 40)
 
     #Desenhando a imagem
     # tela.blit(personagem_img, (pos_personagem_x, pos_personagem_y))
-    tela.blit(imagem_rotacionada, rect_rotacionado)
+    tela_do_jogo.blit(imagem_rotacionada, rect_rotacionado)
+
+    pg.draw.rect(tela_do_jogo, (255, 255, 0), (0, 0, largura_J, altura_J), 5)
+
+    #Escalando a tela do jogo
+    tela_escalada = pg.transform.scale(tela_do_jogo, tela_principal.get_size())
+    tela_principal.blit(tela_escalada, (0, 0))
     
     # Atualização da tela para exibir possíveis mudanças
     pg.display.flip()
